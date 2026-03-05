@@ -2,10 +2,6 @@ const profilePreview = document.getElementById('profilePreview');
 const userTitle = document.getElementById('userTitle');
 const statusEl = document.getElementById('status');
 
-const roomDisplayName = document.getElementById('roomDisplayName');
-const roomDisplayBio = document.getElementById('roomDisplayBio');
-const roomAvatar = document.getElementById('roomAvatar');
-
 const chatsList = document.getElementById('chatsList');
 const chatsSection = document.getElementById('chatsSection');
 const searchInput = document.getElementById('searchInput');
@@ -230,30 +226,6 @@ function setActiveChatHeader(room, memberRows = []) {
   profilePreview.classList.add('hidden');
 }
 
-function setRoomBanner(room) {
-  if (!room) {
-    roomDisplayName.textContent = 'No chat selected';
-    roomDisplayBio.textContent = 'Choose a chat from the left sidebar.';
-    roomDisplayBio.classList.remove('hidden');
-    roomAvatar.removeAttribute('src');
-    roomAvatar.classList.add('hidden');
-    return;
-  }
-
-  const safeName =
-    room.name && !String(room.name).startsWith('dm_') ? room.name : 'Chat';
-  roomDisplayName.textContent = safeName;
-  roomDisplayBio.textContent = room.bio || '';
-  roomDisplayBio.classList.toggle('hidden', !roomDisplayBio.textContent);
-  if (room.avatarBase64) {
-    roomAvatar.src = `data:image/*;base64,${room.avatarBase64}`;
-    roomAvatar.classList.remove('hidden');
-  } else {
-    roomAvatar.removeAttribute('src');
-    roomAvatar.classList.add('hidden');
-  }
-}
-
 function addSystemMessage(text) {
   const div = document.createElement('div');
   div.className = 'msg system';
@@ -411,7 +383,6 @@ async function joinRoom(roomId) {
       res.messages.forEach(addMessage);
       renderMembers(res.members || []);
       setActiveChatHeader(res.room, res.members || []);
-      setRoomBanner(res.room);
       setStatus('');
       updateComposerState();
       loadSidebar();
@@ -659,9 +630,6 @@ attachBtn.addEventListener('click', () => {
   fileInput.click();
 });
 profilePreview.addEventListener('click', () => {
-  if (currentPeerUserId) viewUserProfile(currentPeerUserId);
-});
-roomAvatar.addEventListener('click', () => {
   if (currentPeerUserId) viewUserProfile(currentPeerUserId);
 });
 

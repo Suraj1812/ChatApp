@@ -189,10 +189,10 @@ button.icon-only {
 
 .app-grid {
   width: min(1500px, 100vw);
-  height: 100vh;
+  height: 100dvh;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 520px 1fr;
+  grid-template-columns: minmax(320px, 520px) minmax(0, 1fr);
   gap: 0;
 }
 
@@ -416,7 +416,7 @@ button.icon-only {
 .chat-main {
   border-radius: 0;
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
   overflow: hidden;
   background: #0b141a;
 }
@@ -464,19 +464,6 @@ button.icon-only {
 .avatar.large {
   width: 72px;
   height: 72px;
-}
-
-.room-banner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
-  border-bottom: 1px solid var(--border);
-  background: #111b21;
-}
-
-.room-banner small {
-  color: var(--muted);
 }
 
 .icon-toolbar {
@@ -746,7 +733,7 @@ button:disabled {
 
 @media (max-width: 1100px) {
   .app-grid {
-    grid-template-columns: 420px 1fr;
+    grid-template-columns: minmax(290px, 400px) minmax(0, 1fr);
   }
 
   .side-item-title {
@@ -759,24 +746,31 @@ button:disabled {
 }
 
 @media (max-width: 900px) {
+  body.chat-wa {
+    min-height: 100dvh;
+    overflow: hidden;
+  }
+
   .app-grid {
+    width: 100%;
+    height: 100dvh;
     grid-template-columns: 1fr;
+    grid-template-rows: 42dvh minmax(0, 58dvh);
   }
 
   .sidebar {
-    height: 44vh;
+    min-height: 0;
     grid-template-columns: 60px 1fr;
   }
 
   .chat-main {
-    height: 56vh;
+    min-height: 0;
   }
 
   .chat-header {
     padding: 8px 10px;
   }
 
-  .room-banner,
   .icon-toolbar,
   .composer {
     padding-left: 10px;
@@ -789,5 +783,63 @@ button:disabled {
 
   .msg {
     max-width: 88%;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-grid {
+    grid-template-rows: 40dvh minmax(0, 60dvh);
+  }
+
+  .sidebar {
+    grid-template-columns: 54px 1fr;
+  }
+
+  .sidebar-rail {
+    padding: 10px 5px;
+    gap: 10px;
+  }
+
+  .rail-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+
+  .sidebar-top {
+    padding: 10px;
+  }
+
+  .sidebar-top h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .chat-header {
+    padding: 8px;
+  }
+
+  .chat-header strong {
+    font-size: 15px;
+  }
+
+  .messages {
+    padding: 8px;
+  }
+
+  .composer {
+    padding: 8px;
+  }
+
+  .wa-footer {
+    padding: 6px 10px;
+  }
+
+  #textInput {
+    font-size: 15px;
+  }
+
+  .msg {
+    max-width: 94%;
   }
 }
