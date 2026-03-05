@@ -8,6 +8,7 @@ const searchInput = document.getElementById('searchInput');
 const searchResults = document.getElementById('searchResults');
 const railChatsBtn = document.getElementById('railChatsBtn');
 const railProfileBtn = document.getElementById('railProfileBtn');
+const mobileBackBtn = document.getElementById('mobileBackBtn');
 
 const profileFirstName = document.getElementById('profileFirstName');
 const profileLastName = document.getElementById('profileLastName');
@@ -50,6 +51,18 @@ let sidebarCache = { chats: [] };
 
 function setStatus(text) {
   if (statusEl) statusEl.textContent = text;
+}
+
+function isMobileView() {
+  return window.matchMedia('(max-width: 900px)').matches;
+}
+
+function setMobileChatOpen(isOpen) {
+  if (!isMobileView()) {
+    document.body.classList.remove('mobile-chat-open');
+    return;
+  }
+  document.body.classList.toggle('mobile-chat-open', Boolean(isOpen));
 }
 
 function updateFooterActionIcon() {
@@ -383,6 +396,7 @@ async function joinRoom(roomId) {
       res.messages.forEach(addMessage);
       renderMembers(res.members || []);
       setActiveChatHeader(res.room, res.members || []);
+      setMobileChatOpen(true);
       setStatus('');
       updateComposerState();
       loadSidebar();
@@ -644,6 +658,18 @@ railProfileBtn.addEventListener('click', () => {
   openModal(profileModal);
 });
 
+mobileBackBtn.addEventListener('click', () => {
+  setMobileChatOpen(false);
+});
+
+window.addEventListener('resize', () => {
+  if (!isMobileView()) {
+    document.body.classList.remove('mobile-chat-open');
+    return;
+  }
+  setMobileChatOpen(Boolean(currentRoom));
+});
+
 document.querySelectorAll('[data-close]').forEach((button) => {
   button.addEventListener('click', () => {
     const modalId = button.getAttribute('data-close');
@@ -665,4 +691,5 @@ searchInput.addEventListener('input', () => {
 });
 
 updateComposerState();
+setMobileChatOpen(false);
 loadMeOrRedirect();
