@@ -26,8 +26,11 @@ const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
 const MAX_ROOM_AVATAR_BYTES = 2 * 1024 * 1024;
 const IS_PROD = process.env.NODE_ENV === 'production';
 
-const dbPath = path.join(__dirname, 'data', 'chat_pro.sqlite');
+const dbPath = process.env.DB_PATH
+  ? path.resolve(process.env.DB_PATH)
+  : path.join(__dirname, 'data', 'chat_pro.sqlite');
 const schemaPath = path.join(__dirname, 'db', 'schema.sql');
+fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 const db = new Database(dbPath);
 db.pragma('foreign_keys = ON');
 db.exec(fs.readFileSync(schemaPath, 'utf8'));
